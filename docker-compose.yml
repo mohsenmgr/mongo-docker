@@ -1,0 +1,24 @@
+#docker-compose.yml
+services:
+  mongodb_dev:
+    image: mongo:6.0.5 # version matters, according to the offical doc
+    container_name: mongo_db_container
+    restart: always
+    environment:
+      TZ: "Asia/Hong_Kong"
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: init_db
+    ports:     
+      - 27017:27017
+    networks:
+      - mynetwork
+    volumes:
+      - ./app-database/data/db:/data/db
+      - ./app-database/data/log:/var/log/mongodb
+      - ./app-database/mongod.conf:/etc/mongod.conf
+      - ./app-database/init.d:/docker-entrypoint-initdb.d 
+networks:
+  mynetwork:
+    driver: bridge
+
